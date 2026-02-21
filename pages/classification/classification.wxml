@@ -1,42 +1,36 @@
 <!-- 搜索框 -->
 <search></search>
-<!-- 分类索引 -->
-<view class="hmly-ification">
-	<!-- 左边部分 -->
-	<scroll-view 
-		class="hmly-scroll-left" 
-		scroll-y 
-		scroll-with-animation 
-		style="height:{{phoneHeight}}rpx"
-		scroll-top="{{VerticalNavTop}}"
-	>
-		<block wx:for="{{ificationTitle}}" wx:key="index">
-			<view class="hmly-left-title {{index === activeIndex ? 'hmly-active':''}}" data-index="{{index}}"
-				data-id="{{index}}" bindtap="change">
-				{{item.title}}
-			</view>
-		</block>
-	</scroll-view>
 
-	<!-- 右边部分 -->
-	<scroll-view 
-		class="hmly-scroll-right" 
-		scroll-y 
-		bindscroll="showActive" 
-		style="height:{{phoneHeight}}rpx"
-		scroll-into-view="main-id-{{TabCur}}"
-	>
-		<view class="hmly-content-scroll-item" wx:for="{{ificationContent}}" wx:key="index" data-index="{{index}}"
-			id="main-id-{{index}}">
-			<view class="hmly-top">
-				{{item.title}}
-				<text class="icon-right"></text>
-			</view>
-			<view class="hmly-content">
-				<view class="hmly-content-text" wx:for="{{item.content}}" wx:key="index">
-					{{item.text}}
-				</view>
-			</view>
-		</view>
-	</scroll-view>
+<!-- 顶部分类 tab（横向可滚动） -->
+<scroll-view class="course-tabbar" scroll-x="true" scroll-with-animation="true">
+  <view wx:for="{{tabs}}" wx:key="type"
+        class="tab-item {{currentTab === item.type ? 'active': ''}}"
+        data-type="{{item.type}}"
+        bindtap="switchTab">
+    {{item.name}}
+  </view>
+</scroll-view>
+
+<!-- 课程列表容器 -->
+<view class="course-list-wrap">
+  <!-- 如果列表为空显示提示 -->
+  <view wx:if="{{courseList.length === 0}}" class="empty-tip">
+    暂无课程，换个分类看看吧～
+  </view>
+
+  <!-- 课程卡片网格 -->
+  <view class="course-grid">
+    <block wx:for="{{courseList}}" wx:key="id">
+      <view class="course-card" data-id="{{item.id}}" bindtap="openCourseDetail">
+        <image class="cover" src="{{item.cover}}" mode="aspectFill" />
+        <view class="card-body">
+          <view class="title">{{item.title}}</view>
+          <view class="meta">
+            <view class="teacher">{{item.teacher}}</view>
+            <view class="price">{{item.price}}</view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
 </view>
